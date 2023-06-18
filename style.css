@@ -2,9 +2,38 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 body {
-    background-color: black;
+    background-image: url("./background.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
     overflow: hidden;
+}
+
+#affichage-score {
+    position: absolute;
+    left: 44%;
+    top: 2%;
+    color: aliceblue;
+}
+
+#menu {
+    color: aliceblue;
+    position: absolute;
+    top: 42%;
+    left: 42%;
+    line-height: 2;
+    z-index: 1;
+}
+
+#start-button {
+    background: linear-gradient(0.33turn, #1c323c, #5572c9, #010574);
+    border: solid 3px;
+    color: aliceblue;
+    border-radius: 30%;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 8px;
 }

@@ -7,7 +7,16 @@
     <title>GameJs</title>
 </head>
 <body>
+    <audio src="./title-screen.mp3" autoplay></audio>
+    <div id="affichage-score">
+        <p>Points : <span id="score">0</span></p>
+    </div>
+    <div id="menu">
+        <h1>Score : <span id="big-score">0</span></h1>
+        <button id="start-button" type="button">Start Game</button>
+    </div>
     <canvas id="game-container"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js" integrity="sha512-qF6akR/fsZAB4Co1QDDnUXWnaQseLGXoniuSuSlPQK6+aWhlMZcHzkasCSlnWoe+TJuudlka1/IQ01Dnhgq95g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="index.js"></script>
 </body>
 </html>
