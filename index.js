@@ -42,11 +42,40 @@ class Player extends Entity {
     super(x, y, radius);
     this.color = color;
   }
+
+  drawPlayer() {
+    ctx.save();
+
+    ctx.translate(this.x, this.y);
+
+    let angle = 0;
+    if (rightPressed) {
+      angle = Math.PI / 2;
+    } else if (leftPressed) {
+      angle = -Math.PI / 2;
+    } else if (downPressed) {
+      angle = Math.PI;
+    }
+
+    ctx.rotate(angle);
+
+    ctx.beginPath();
+    ctx.moveTo(0, - 20);
+    ctx.lineTo(-10, 10);
+    ctx.lineTo(0, 20);
+    ctx.lineTo(10, 10);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+
+    ctx.restore();
+  }
 }
 
-class Projectile extends Player {
+class Projectile extends Entity {
   constructor(x, y, radius, color, velocity) {
-    super(x, y, radius, color);
+    super(x, y, radius);
+    this.color = color;
     this.velocity = velocity;
   }
 
@@ -180,7 +209,7 @@ function animate() {
   animationId = requestAnimationFrame(animate);
   animationPlayer = requestAnimationFrame(animatePlayer)
 
-  player.draw();
+  player.drawPlayer();
 
   ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
