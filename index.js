@@ -9,9 +9,11 @@ canvas.height = innerHeight;
 //+--------------------------------------------------------------------------+
 
 const menu = document.getElementById("menu");
+const affichageScoreBox = document.getElementById("affichage-score");
 const affichageScore = document.getElementById("score");
 const bigScore = document.getElementById("big-score");
 const startGameButton = document.getElementById("start-button");
+const title = document.getElementById("title-box");
 const body = document.querySelector("body");
 const music = document.querySelector("audio");
 
@@ -24,7 +26,7 @@ class Entity {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    this.color = "red";
+    this.color = "white";
   }
 
   draw() {
@@ -90,9 +92,15 @@ class Particle extends Enemy {
 //+--------------------------------------------------------------------------+
 
 let player = new Player(canvas.width / 2, canvas.height / 2, 10, "white");
+console.log(player);
 let projectiles = [];
 let enemies = [];
 let particles = [];
+
+let rightPressed = false;
+let leftPressed = false;
+let upPressed = false;
+let downPressed = false;
 
 function init() {
   player = new Player(canvas.width / 2, canvas.height / 2, 10, "white");
@@ -115,24 +123,67 @@ window.addEventListener("click", (event) => {
     x: Math.cos(angle) * 5,
     y: Math.sin(angle) * 5,
   };
-  const projectile = new Projectile(player.x, player.y, 5, "white", velocity);
+  const projectile = new Projectile(player.x, player.y, 5, "lightgreen", velocity);
   projectile.draw();
   projectiles.push(projectile);
 });
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+
+function keyDownHandler (e) {
+  if (e.keyCode == 81) {
+    leftPressed = true;
+  } else if (e.keyCode == 68) {
+    rightPressed = true;
+  } else if (e.keyCode == 90) {
+    upPressed = true;
+  } else if (e.keyCode == 83) {
+    downPressed = true;
+  }
+}
+
+function keyUpHandler (e) {
+  if (e.keyCode == 81) {
+    leftPressed = false;
+  } else if (e.keyCode == 68) {
+    rightPressed = false;
+  } else if (e.keyCode == 90) {
+    upPressed = false;
+  } else if (e.keyCode == 83) {
+    downPressed = false;
+  }
+}
 
 //+--------------------------------------------------------------------------+
 //|                   Gestion de toutes les animations                       |
 //+--------------------------------------------------------------------------+
 
 let animationId;
+let animationPlayer;
 let score = 0;
+
+function animatePlayer() {
+    if (rightPressed && player.x < canvas.width) {
+      player.x += 2;
+    } else if (leftPressed && player.x > 0) {
+      player.x -= 2;
+    } else if (upPressed && player.y > 0) {
+      player.y -= 2;
+    } else if (downPressed && player.y < canvas.height) {
+      player.y += 2;
+    }
+}
+
 function animate() {
   animationId = requestAnimationFrame(animate);
+  animationPlayer = requestAnimationFrame(animatePlayer)
+
+  player.draw();
 
   ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  player.draw();
 
   particles.forEach((particle, index) => {
     if (particle.alpha <= 0) {
@@ -252,7 +303,9 @@ function spawnEnemies() {
 
 startGameButton.addEventListener("click", () => {
   init();
+  affichageScoreBox.style.display = "flex";
   menu.style.display = "none";
+  title.style.display = "none";
   music.src = "./Meta Ridley.mp3";
   animate();
   spawnEnemies();
